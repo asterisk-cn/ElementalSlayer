@@ -63,8 +63,6 @@ namespace MyGame
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-
             foreach (Weapon weapon in _weapons)
             {
                 weapon.gameObject.SetActive(false);

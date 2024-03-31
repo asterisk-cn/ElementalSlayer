@@ -28,6 +28,8 @@ namespace MyGame
 
         private CharacterController _controller;
 
+        private float _scoreMultiplier = 1.0f;
+
         void Awake()
         {
             _controller = GetComponent<CharacterController>();
@@ -49,10 +51,16 @@ namespace MyGame
             if (Element.IsStrongAgainst(attackType, ElementType))
             {
                 damage *= 2;
+                _scoreMultiplier = 2.0f;
             }
             else if (Element.IsStrongAgainst(ElementType, attackType))
             {
                 damage = damage / 2;
+                _scoreMultiplier = 0.5f;
+            }
+            else
+            {
+                _scoreMultiplier = 1.0f;
             }
             health -= damage;
             CheckHealth();
@@ -71,6 +79,7 @@ namespace MyGame
             if (IsDead) return;
             IsDead = true;
             Instantiate(_effect, transform.position, Quaternion.identity);
+            GameController.Instance.AddScore(multiplier: _scoreMultiplier);
             Destroy(gameObject);
         }
     }
