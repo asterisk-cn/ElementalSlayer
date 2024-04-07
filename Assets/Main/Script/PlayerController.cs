@@ -15,6 +15,8 @@ namespace MyGame
         [SerializeField]
         List<Weapon> _weapons;
         [SerializeField]
+        List<GameObject> _weaponUIs;
+        [SerializeField]
         float _attackTime = 0.7f;
 
         [Header("Sound Settings")]
@@ -41,6 +43,7 @@ namespace MyGame
 
         int _currentWeaponIndex;
         Weapon _currentWeapon{ get { return _weapons[_currentWeaponIndex]; } }
+        GameObject _currentWeaponUI { get { return _weaponUIs[_currentWeaponIndex]; } }
         private float _animationSpeed;
 
         void Awake()
@@ -69,7 +72,12 @@ namespace MyGame
                 weapon.AudioSource = _audioSource;
                 weapon.HitSound = _hitSound;
             }
+            foreach (GameObject weaponUI in _weaponUIs)
+            {
+                weaponUI.SetActive(false);
+            }
 
+            _currentWeaponUI.gameObject.SetActive(true);
             _currentWeapon.gameObject.SetActive(true);
             SetAnimatorFloat("Animation Speed", _animationSpeed);
         }
@@ -112,6 +120,7 @@ namespace MyGame
         public void SwitchWeapon()
         {
             _currentWeapon.gameObject.SetActive(false);
+            _currentWeaponUI.gameObject.SetActive(false);
             if (_currentWeaponIndex < _weapons.Count - 1)
             {
                 _currentWeaponIndex++;
@@ -121,6 +130,7 @@ namespace MyGame
                 _currentWeaponIndex = 0;
             }
             _currentWeapon.gameObject.SetActive(true);
+            _currentWeaponUI.gameObject.SetActive(true);
             Lock(false, true, true, 0, 0.2f);
         }
 
